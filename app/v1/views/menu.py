@@ -1,8 +1,12 @@
-@app.route("/api/v1/menu")
+from flask import Blueprint
+
+menu = Blueprint('menu', __name__, url_prefix='/api/v1')
+
+@menu.route("/menu")
 def get_menu():
     return Menu.get_menu()
 
-@app.route("/api/v1/menu", methods=["POST"])
+@menu.route("/menu", methods=["POST"])
 def setup_menu():
     data = request.data
     id = data['meal_id']

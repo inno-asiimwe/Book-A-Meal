@@ -19,7 +19,6 @@ class MenuTestCase(unittest.TestCase):
         }
 
         with self.app.app_context():
-            # create all tables
             db.session.close()
             db.drop_all()
             db.create_all()

@@ -1,4 +1,8 @@
-@app.route("/api/v1/orders")
+from flask import Blueprint
+
+orders = Blueprint('orders', __name__, url_prefix='/api/v1')
+
+@orders.route("/orders")
 def get_all_orders():
     orders = Order.get_all_orders()
     if orders:
@@ -15,7 +19,7 @@ def get_all_orders():
     else:
         return make_response("No orders present", 400)
 
-@app.route("/api/v1/orders/<int:id>", methods=["DELETE"])
+@orders.route("/orders/<int:id>", methods=["DELETE"])
 def remove_order(id):
     order = Order.query.filter_by(id=id).first()
     if not order:
