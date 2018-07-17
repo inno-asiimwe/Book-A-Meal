@@ -1,9 +1,8 @@
 from flask_bcrypt import Bcrypt
 from flask import jsonify, make_response
 
-from app.__init__ import db, secret
+from app.v1.views.api import db, secret
 
-from app import db
 import re
 
 

@@ -2,7 +2,7 @@ from . import auth_blueprint
 
 from flask.views import MethodView
 from flask import make_response, request, jsonify
-from app.model.user import User
+from app.v1.models.user import User
 import re
 
 from ..authentication import Token

@@ -1,10 +1,8 @@
 from datetime import datetime, timedelta
 from flask import jsonify, make_response
 
-from app.__init__ import db, secret
+from app.v1.views.api import db, secret
 import datetime
-
-from app import db
 
 
 class Meal(db.Model):
