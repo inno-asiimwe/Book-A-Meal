@@ -1,15 +1,14 @@
 from flask import jsonify, request, make_response, Blueprint
 from flasgger import swag_from
-
-# from app.v1.views.utils import sign_up, verify_registration_data, log_in
-# from app.v1.views.decorators import login_required
+import re
 from app.v1.models.models import User
-import os, binascii
+import os
+import binascii
 from app.v1.views.authentication import Token
 
-# SECRET_KEY = binascii.hexlify(os.urandom(24))
 
 users = Blueprint('users', __name__, url_prefix='/auth')
+
 
 @users.route("/register", methods=["POST"])
 def register_user():
@@ -57,41 +56,29 @@ def register_user():
         return make_response(jsonify(response)), 202
 
 
-
-
-
-
-
-
-
-
-
-
-# login = Blueprint('login', __name__, url_prefix='/auth/')
-
 @users.route("/login", methods=["POST"])
 def login_user():
-        """Handle POST request for this view. Url --> /auth/login"""
-        try:
-            user = User.query.filter_by(email=request.data["email"]).first()
+    """Handle POST request for this view. Url --> /auth/login"""
+    try:
+        user = User.query.filter_by(email=request.data["email"]).first()
 
-            if user and user.password_is_valid(request.data["password"]):
-                token = Token()
-                access_token =  token.generate_token(user.id)
-                if access_token:
-                    response = {
-                        "message": "You logged in successfully.",
-                        "access_token": access_token.decode()
-                    }
-                    return make_response(jsonify(response)), 200
-            else:
+        if user and user.password_is_valid(request.data["password"]):
+            token = Token()
+            access_token = token.generate_token(user.id)
+            if access_token:
                 response = {
-                    "message": "Invalid email or password, Please try again"
+                    "message": "You logged in successfully.",
+                    "access_token": access_token.decode()
                 }
-                return make_response(jsonify(response)), 401
-
-        except Exception as e:
+                return make_response(jsonify(response)), 200
+        else:
             response = {
-                "message": str(e)
+                "message": "Invalid email or password, Please try again"
             }
-            return make_response(jsonify(response)), 500
+            return make_response(jsonify(response)), 401
+
+    except Exception as e:
+        response = {
+            "message": str(e)
+        }
+        return make_response(jsonify(response)), 500
