@@ -1,6 +1,9 @@
 from flask import jsonify, make_response
 from app.v1.models.db_connect import db
 
+from marshmallow import Schema, fields, validate, ValidationError
+
+
 class Meal(db.Model):
     """Defines the 'Meal' model mapped to database table 'meal'."""
     id = db.Column(db.Integer, primary_key=True)
@@ -48,25 +51,21 @@ class Meal(db.Model):
         if not meal:
             return make_response("That meal is not present", 400)
         results = []
-        obj = {
-            'id': meal.id,
-            'name': meal.name,
-            'price': meal.price
-        }
+        obj = meal_schema.dump(meal)
         results.append(obj)
         return make_response(jsonify(results), 200)
 
     @staticmethod
     def create_meal(name, price):
-        meal = Meal(name, price)
-        meal.save()
-        response = jsonify({
-            'id': meal.id,
-            'name': meal.name,
-            'price': meal.price,
-        })
-        response.status_code = 201
-        return response
+        meal = Meal.query.filter_by(name=name).first()
+        if not meal:
+            meal = Meal(name, price)
+            meal.save()
+            result = meal_schema.dump(meal)
+            response = jsonify(result),201
+            return response
+        else:
+            return make_response("The meal already exists", 400)
 
     @staticmethod
     def update_meal(id, name, price):
@@ -100,3 +99,19 @@ class Meal(db.Model):
         """Returns a representation of the meals"""
         return "Meal (%d, %s, %s )" % (
             self.id, self.name, self.price)
+
+
+def must_not_be_black(data):
+    if not data:
+        raise ValidationError("Data not provided")
+
+
+class MealSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str(required=True, validate=(must_not_be_black, validate.Length(min=2, max=46, error="Meal name must have 2 - 46 characters")))
+    price = fields.Int(required=True)
+
+meal_schema = MealSchema()
+meals_schema = MealSchema(many=True)
+
+

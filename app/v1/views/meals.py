@@ -1,9 +1,8 @@
 from flask import jsonify, request, make_response, Blueprint
 from flasgger import swag_from
 from app.v1.views.decorators import login_required
-# from app.v1.models.meals import DbMeals
-from app.v1.models.models import Meal
-
+from marshmallow import ValidationError
+from app.v1.models.meal import Meal, meal_schema
 
 meals = Blueprint('meals', __name__, url_prefix='/api/v1')
 
@@ -21,8 +20,12 @@ def account_get_specific_meal(id):
 @login_required
 def account_create_meal():
     data = request.data
-    name = data["name"]
-    price = data["price"]
+    try:
+        meal_data = meal_schema.load(data)
+    except ValidationError as e:
+        return jsonify(e.messages)
+
+    name, price = meal_data["name"], meal_data["price"]
     return Meal.create_meal(name, price)
 
 @meals.route("/meals/<int:id>", methods=["PUT"])
