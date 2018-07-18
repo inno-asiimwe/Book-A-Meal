@@ -1,4 +1,7 @@
-from api.models.User import User
-from api.models.Meals import Meals
-from api.models.Orders import Orders
-from api.models.Menu import Menu
+from app.v1.models.db_connect import db
+from app.v1.models.user import User
+from app.v1.models.meal import Meal
+from app.v1.models.menu import Menu
+from app.v1.models.order import Order
+
+db.create_all()

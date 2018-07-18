@@ -1,9 +1,5 @@
-from datetime import datetime, timedelta
 from flask import jsonify, make_response
-
-from app.v1.views.api import db, secret
-import datetime
-
+from app.v1.models.db_connect import db
 
 class Meal(db.Model):
     """Defines the 'Meal' model mapped to database table 'meal'."""

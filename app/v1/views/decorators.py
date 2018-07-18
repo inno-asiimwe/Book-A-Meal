@@ -5,9 +5,6 @@ from .authentication import Token
 
 token = Token()
 
-
-# auth = authentication.Token()
-
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):

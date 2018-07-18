@@ -1,15 +1,13 @@
 from datetime import datetime, timedelta
 from flask import jsonify, make_response
-
-from app.v1.views.api import db, secret
-from datetime import datetime
+from app.v1.models.db_connect import db
 
 
 class Menu(db.Model):
     """Defines the 'Menu' model mapped to table 'menu'."""
     id = db.Column(db.Integer, primary_key=True)
     meal_id = db.Column(db.Integer, db.ForeignKey('meal.id'))
-    day = db.Column(db.DateTime, default=datetime.datetime.today())
+    day = db.Column(db.DateTime, default=datetime.today())
     orders = db.relationship('Order', backref='menu')
 
     def __init__(self, meal_id):
@@ -18,7 +16,7 @@ class Menu(db.Model):
 
     def save(self):
         """Saves items to the menu table"""
-        self.day = datetime.datetime.today()
+        self.day = datetime.today()
         db.session.add(self)
         try:
             db.session.commit()
@@ -53,7 +51,7 @@ class Menu(db.Model):
                 'id': menu.id,
                 'name': menu.meal.name,
                 'price': menu.meal.price,
-                'day': datetime.datetime.utcnow()
+                'day': datetime.utcnow()
             }
             }), 201
 

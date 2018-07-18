@@ -1,11 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import jsonify, make_response
-
-from app.v1.views.api import db, secret
-import datetime
-
-import re
-
+from app.v1.models.db_connect import db
 
 class Order(db.Model):
     """Defines the 'Order' mapped to database table 'order'."""

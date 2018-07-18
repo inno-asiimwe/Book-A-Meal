@@ -1,4 +1,9 @@
-from flask import Blueprint
+from flask import jsonify, request, make_response, Blueprint
+from flasgger import swag_from
+from app.v1.views.decorators import login_required
+# from app.v1.models.meals import DbMeals
+from app.v1.models.models import Meal
+
 
 meals = Blueprint('meals', __name__, url_prefix='/api/v1')
 

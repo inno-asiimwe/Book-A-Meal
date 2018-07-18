@@ -1,7 +1,8 @@
 import unittest
 import os
 import json
-from app.v1.views.api import create_app, db
+from run_setup import app, app1, create_app
+from app.v1.models.db_connect import db
 
 
 class AuthTestCase(unittest.TestCase):
@@ -17,7 +18,6 @@ class AuthTestCase(unittest.TestCase):
         }
 
         with self.app.app_context():
-            # create all tables
             db.session.close()
             db.drop_all()
             db.create_all()
