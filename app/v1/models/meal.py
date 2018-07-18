@@ -33,11 +33,7 @@ class Meal(db.Model):
         meals = Meal.query.all()
         if meals:
             for meal in meals:
-                obj = {
-                    "id": meal.id,
-                    "name": meal.name,
-                    "price": meal.price,
-                }
+                obj = meal_schema.dump(meal)
                 results.append(obj)
             response = jsonify(results)
             response.status_code = 200
@@ -76,13 +72,8 @@ class Meal(db.Model):
         meal.name = name
         meal.price = price
         meal.save()
-        response = jsonify({
-            'id': meal.id,
-            'name': meal.name,
-            'price': meal.price
-        })
-
-        response.status_code = 200
+        result = meal_schema.dump(meal)
+        response = jsonify(result), 200
         return response
 
     @staticmethod
@@ -108,10 +99,13 @@ def must_not_be_black(data):
 
 class MealSchema(Schema):
     id = fields.Int(dump_only=True)
-    name = fields.Str(required=True, validate=(must_not_be_black, validate.Length(min=2, max=46, error="Meal name must have 2 - 46 characters")))
+    name = fields.Str(required=True,
+                      validate=(must_not_be_black, 
+                                validate.Length(min=2, max=46,
+                                                error="Meal name must have 2 -\
+                                                 46 characters")))
     price = fields.Int(required=True)
+
 
 meal_schema = MealSchema()
 meals_schema = MealSchema(many=True)
-
-
