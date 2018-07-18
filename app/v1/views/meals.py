@@ -29,6 +29,7 @@ def account_create_meal():
     return Meal.create_meal(name, price)
 
 @meals.route("/meals/<int:id>", methods=["PUT"])
+@login_required
 def account_update_meal(id):
     name = request.data["name"]
     price = request.data["price"]
