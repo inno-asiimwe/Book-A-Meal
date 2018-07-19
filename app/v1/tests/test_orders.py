@@ -19,11 +19,7 @@ class OrderTestCase(unittest.TestCase):
             "email": "mutebi@gmail.com",
             "password": "H1ack_it"
         }
-
-        with self.app.app_context():
-            db.session.close()
-            db.drop_all()
-            db.create_all()
+        db.create_all()
 
     def test_get_all_orders(self):
         """tests api ability to retrieve orders"""

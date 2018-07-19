@@ -1,8 +1,11 @@
 import jwt
 from datetime import datetime, timedelta
-import os, binascii
+import os
+import binascii
 
 secret = binascii.hexlify(os.urandom(24))
+
+
 class Token:
     def generate_token(self, user_id):
             """Generates the access token"""

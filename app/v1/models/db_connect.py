@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 
+from run_setup import app1
 
-from run_setup import app
-
-db = SQLAlchemy(app)
+db = SQLAlchemy(app1)

@@ -19,11 +19,7 @@ class MenuTestCase(unittest.TestCase):
             "email": "mutebi@gmail.com",
             "password": "H1ack_it"
         }
-
-        with self.app.app_context():
-            db.session.close()
-            db.drop_all()
-            db.create_all()
+        db.create_all()
 
     def test_setup_menu(self):
         """Tests menu setup"""
@@ -41,8 +37,7 @@ class MenuTestCase(unittest.TestCase):
             data=self.menu,
             headers={
                 "Authorization": result["access_token"]})
-        print(response.status)
-        self.assertIn( b"Beef with Rice", response.data)
+        self.assertIn(b"Beef with Rice", response.data)
 
     def test_get_menu(self):
         """Test menu retrieval"""
@@ -62,9 +57,8 @@ class MenuTestCase(unittest.TestCase):
                 "Authorization": result["access_token"]})
         response = self.client().get("/api/v1/menu",
                                      headers={"Authorization": result["access_token"]})
-        print(response.data.decode())
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Beef with Rice",response.data)
+        self.assertIn(b"Beef with Rice", response.data)
 
     def tearDown(self):
         """teardown all initialized variables"""

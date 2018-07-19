@@ -9,7 +9,7 @@ class User(db.Model):
     """Defines the 'User' model mapped to database table 'user'."""
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(145), nullable=False, unique=True)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(150), nullable=False)
     admin = db.Column(db.Boolean, default=False)
     orders = db.relationship('Order', backref='user')
 
@@ -69,6 +69,7 @@ class User(db.Model):
         else:
             response = "Please register then login"
             return make_response(jsonify(response)), 500
+
 
 def must_not_be_black(data):
     if not data:

@@ -43,6 +43,7 @@ class Meal(db.Model):
 
     @staticmethod
     def get_meal(id):
+        """Helps to get a specific meal"""
         meal = Meal.query.filter_by(id=id).first()
         if not meal:
             return make_response("That meal is not present", 400)
@@ -53,6 +54,7 @@ class Meal(db.Model):
 
     @staticmethod
     def create_meal(name, price):
+        """Enables meal creation"""
         meal = Meal.query.filter_by(name=name).first()
         if not meal:
             meal = Meal(name, price)
@@ -65,6 +67,7 @@ class Meal(db.Model):
 
     @staticmethod
     def update_meal(id, name, price):
+        """Enables meal change"""
         meal = Meal.query.filter_by(id=id).first()
         if not meal:
             abort(404)
@@ -78,6 +81,7 @@ class Meal(db.Model):
 
     @staticmethod
     def delete_meal(id):
+        """Helps one remove a specific meal"""
         meal = Meal.query.filter_by(id=id).first()
         if meal:
             Meal.delete(meal)
@@ -93,17 +97,17 @@ class Meal(db.Model):
 
 
 def must_not_be_black(data):
+    """Ensures no empty data is retrieved"""
     if not data:
         raise ValidationError("Data not provided")
 
 
 class MealSchema(Schema):
+    """Defines the Meal Schema"""
     id = fields.Int(dump_only=True)
     name = fields.Str(required=True,
                       validate=(must_not_be_black, 
-                                validate.Length(min=2, max=46,
-                                                error="Meal name must have 2 -\
-                                                 46 characters")))
+                                validate.Length(min=2, max=46)))
     price = fields.Int(required=True)
 
 

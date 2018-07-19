@@ -18,12 +18,7 @@ class MealsTestCase(unittest.TestCase):
             "email": "mutebi@gmail.com",
             "password": "H1ack_it"
         }
-
-
-        with self.app.app_context():
-            db.session.close()
-            db.drop_all()
-            db.create_all()
+        db.create_all()
 
     def test_meal_creation(self):
         """Test API can create a meal"""
@@ -49,11 +44,9 @@ class MealsTestCase(unittest.TestCase):
             data=self.meal,
             headers={
                 "Authorization": result["access_token"]})
-        print(meal_response.data.decode())
         self.assertEqual(meal_response.status_code, 201)
         response = self.client().get("/api/v1/meals",
                                      headers={"Authorization": result["access_token"]})
-        print(response.data.decode())
         self.assertEqual(response.status_code, 200)
 
     def test_api_can_get_meal_by_id(self):
@@ -61,7 +54,7 @@ class MealsTestCase(unittest.TestCase):
         self.client().post('/auth/register', data=self.user_data)
         login_response = self.client().post("/auth/login", data=self.user_data)
         self.assertEqual(login_response.status_code, 200)
-        result = json.loads(login_response.data.decode()) 
+        result = json.loads(login_response.data.decode())
         self.assertTrue(result["access_token"])
         response = self.client().post(
             "/api/v1/meals",
@@ -69,14 +62,9 @@ class MealsTestCase(unittest.TestCase):
             headers={
                 "Authorization": result["access_token"]})
         self.assertEqual(response.status_code, 201)
-        # print("am here")
-        print(response.data.decode())
         result = self.client().get("/api/v1/meals/1",
                                    headers={"Authorization": result["access_token"]})
-        print(result.data.decode())
         self.assertEqual(result.status_code, 200)
-
-        
 
     def test_meal_can_be_edited(self):
         """Test API can edit an existing meal"""

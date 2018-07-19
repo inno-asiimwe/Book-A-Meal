@@ -6,6 +6,7 @@ from app.v1.models.models import Order
 
 orders = Blueprint('orders', __name__, url_prefix='/api/v1')
 
+
 @orders.route("/orders")
 def get_all_orders():
     orders = Order.get_all_orders()
@@ -22,6 +23,7 @@ def get_all_orders():
         return response
     else:
         return make_response("No orders present", 400)
+
 
 @orders.route("/orders/<int:id>", methods=["DELETE"])
 def remove_order(id):

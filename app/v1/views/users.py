@@ -1,13 +1,14 @@
-from flask import jsonify, request, make_response, Blueprint
+from flask import jsonify, request, Blueprint
 from flasgger import swag_from
-from app.v1.views.authentication import Token
 from marshmallow import ValidationError
-from app.v1.models.user import User, user_schema
+from app.v1.models.models import User, user_schema
 
 
 users = Blueprint('users', __name__, url_prefix='/auth')
 
+
 @users.route("/register", methods=["POST"])
+@swag_from('api_doc/user_signup.yml')
 def register_user():
     post_data = request.data
     try:
@@ -20,6 +21,7 @@ def register_user():
 
 
 @users.route("/login", methods=["POST"])
+@swag_from('api_doc/user_login.yml')
 def login_user():
     """Handle POST request for this view. Url --> /auth/login"""
     login_data = request.data

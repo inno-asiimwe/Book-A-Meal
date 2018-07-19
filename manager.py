@@ -1,13 +1,15 @@
-from run_setup import app
+import unittest
+from run_setup import app1
 from app.v1.models.db_connect import db
 
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-migrate = Migrate(app, db)
-manager = Manager(app)
+migrate = Migrate(app1, db)
+manager = Manager(app1)
 
 manager.add_command('db', MigrateCommand)
+
 
 @manager.command
 def test():
@@ -17,6 +19,7 @@ def test():
     if result.wasSuccessful():
         return 0
     return 1
+
 
 if __name__ == '__main__':
     manager.run()

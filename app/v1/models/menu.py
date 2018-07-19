@@ -1,7 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import jsonify, make_response
 from app.v1.models.db_connect import db
-from marshmallow import Schema, fields, validate, ValidationError
+from marshmallow import Schema, fields, ValidationError
 
 
 class Menu(db.Model):
@@ -10,7 +10,6 @@ class Menu(db.Model):
     meal_id = db.Column(db.Integer, db.ForeignKey('meal.id'))
     day = db.Column(db.DateTime, default=datetime.today())
     orders = db.relationship('Order', backref='menu')
-
 
     def __init__(self, meal_id):
         """Initialises the menu model"""
@@ -29,13 +28,11 @@ class Menu(db.Model):
     def get_menu():
         """Retrieves all the menu items"""
         menus = Menu.query.all()
-        print(menus)
         if not menus:
             return make_response("No menu present", 400)
         
         results = []
         for menu in menus:
-            # obj = menu_schema.dump(menu)
             obj = {
                 'id': menu.id,
                 'name': menu.meal.name,
@@ -81,4 +78,3 @@ class MenuSchema(Schema):
 
 
 menu_schema = MenuSchema()
-menus_schema = MenuSchema(many=True)  

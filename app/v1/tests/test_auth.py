@@ -25,13 +25,21 @@ class AuthTestCase(unittest.TestCase):
 
     def test_registration(self):
         """Test user registration works correctly."""
-        response = self.client().post('/auth/register', content_type="application/json", data=json.dumps(self.user_data))
+        response = self.client().post(
+            '/auth/register',
+            content_type="application/json",
+            data=json.dumps(
+                self.user_data))
         result = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 201)
 
     def test_already_registered_user(self):
         """Test that a user cannot be registered twice."""
-        response = self.client().post('/auth/register', content_type="application/json", data=json.dumps(self.user_data))
+        response = self.client().post(
+            '/auth/register',
+            content_type="application/json",
+            data=json.dumps(
+                self.user_data))
         result = json.loads(response.data.decode())
         response = self.client().post("/auth/register", data=self.user_data)
         result = json.loads(response.data.decode())
