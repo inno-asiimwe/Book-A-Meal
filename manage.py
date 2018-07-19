@@ -13,12 +13,15 @@ from flasgger import Swagger
 
 swagger = Swagger(app)
 
-app1.register_blueprint(users)
-app1.register_blueprint(meals)
-app1.register_blueprint(menu)
-app1.register_blueprint(orders)
+
+def start_app():
+    app1.register_blueprint(users)
+    app1.register_blueprint(meals)
+    app1.register_blueprint(menu)
+    app1.register_blueprint(orders)
+    return app1
 
 
 if __name__ == '__main__':
-    app1.run()
+    start_app().run()
 
