@@ -11,6 +11,7 @@ class Menu(db.Model):
     day = db.Column(db.DateTime, default=datetime.today())
     orders = db.relationship('Order', backref='menu')
 
+
     def __init__(self, meal_id):
         """Initialises the menu model"""
         self.meal_id = meal_id
@@ -28,10 +29,13 @@ class Menu(db.Model):
     def get_menu():
         """Retrieves all the menu items"""
         menus = Menu.query.all()
+        print(menus)
         if not menus:
             return make_response("No menu present", 400)
+        
         results = []
         for menu in menus:
+            # obj = menu_schema.dump(menu)
             obj = {
                 'id': menu.id,
                 'name': menu.meal.name,
@@ -45,6 +49,7 @@ class Menu(db.Model):
 
     @staticmethod
     def setup_menu(id):
+        """Creates the menu"""
         menu = Menu(meal_id=id)
         menu.save()
         return make_response(
@@ -57,5 +62,23 @@ class Menu(db.Model):
             }), 201
 
     def __repr__(self):
+        """Returns a string representation of menu object"""
         return "Menu (%d,%s, %s, %s, %s )" % (
-            self.id, self.name, self.meal_id, self.day)
+            self.id, self.meal.name, self.meal.price, self.meal_id, self.day)
+
+
+def must_not_be_black(data):
+    """Ensures data retrieved is not blank"""
+    if not data:
+        raise ValidationError("Data not provided")
+
+
+class MenuSchema(Schema):
+    """Defines a Menu Schema"""
+    id = fields.Int(dump_only=True)
+    meal_id = fields.Int(required=True, validate=must_not_be_black)
+    day = fields.Date(dump_only=True)
+
+
+menu_schema = MenuSchema()
+menus_schema = MenuSchema(many=True)  
