@@ -8,15 +8,15 @@ meals = Blueprint('meals', __name__, url_prefix='/api/v1')
 
 
 @meals.route("/meals")
-@login_required
 @swag_from('api_doc/get_meals.yml')
+@login_required
 def account_get_meals():
     return Meal.get_meals()
 
 
 @meals.route("/meals/<int:id>", methods=["GET"])
-@login_required
 @swag_from('api_doc/get_meal.yml')
+@login_required
 def account_get_specific_meal(id):
     return Meal.get_meal(id)
 
