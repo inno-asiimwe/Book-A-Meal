@@ -1,0 +1,32 @@
+    SignUp route
+    ---
+    tags:
+      - Book-A-Meal API
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - "email"
+            - "password"
+          properties:
+            email:
+              type: "string"
+              example: "zeroberto@gmail.com"
+            password:
+              type: "string"
+              format: password
+              example: "1234567"
+    responses:
+        201:
+            description: Successfull registration of user
+            schema:
+              type: object
+            examples:
+              { "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjg1NDc5NzEsInN1YiI6MX0._A9-QMDV1nL7AW5BXAAvqJw3C2E1pNJVcdUSGo2Njs8"}
+        401:
+            description: Unsuccessful user registration
+        202:
+            description: Double signup rejection

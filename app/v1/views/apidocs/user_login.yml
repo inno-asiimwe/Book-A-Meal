@@ -1,0 +1,29 @@
+    Login route
+    ---
+    tags:
+      - Book-A-Meal API
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - "email"
+            - "password"
+          properties:
+            email:
+              type: "string"
+              example: "zeroberto@gmail.com"
+            password:
+              type: "string"
+              format: password
+              example: "1234567"
+    responses:
+        200:
+            description: A successfully logged user
+        401:
+            description: A user with wrong or inexistent email and password is informed
+        500:
+            description: A user trying to gain access without having registered
+  
