@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import jsonify, make_response
 from app.v1.models.db_connect import db
 
+
 class Order(db.Model):
     """Defines the 'Order' mapped to database table 'order'."""
     id = db.Column(db.Integer, primary_key=True)
@@ -14,9 +15,34 @@ class Order(db.Model):
         self.user_id = user_id
         self.menu_id = menu_id
 
+    # @staticmethod
+    # def setup_menu(id):
+    #     """Creates the menu"""
+    #     menu = Menu(meal_id=id)
+    #     menu.save()
+    #     return make_response(
+    #         {"MENU": {
+    #             'id': menu.id,
+    #             'name': menu.meal.name,
+    #             'price': menu.meal.price,
+    #             'day': datetime.utcnow()
+    #         }
+    #         }), 201
+
+    def setup_order(id):
+        """Creates the order"""
+        order = Order(order_id=id)
+        Order.save()
+        return make_response(
+            {"ORDER":{
+                "id": order.id,
+                "name":Order.menu_id
+            }}
+        )
+
     def add_order(self):
         """Saves items to the order table"""
-        self.order_time = datetime.datetime.now()
+        self.order_time = datetime.now()
         db.session.add(self)
         return Order.save()
 
@@ -56,3 +82,13 @@ class Order(db.Model):
         """Returns a string representation of the order table"""
         return "Order(%d, %s, %s, %s, %s )" % (
             self.id, self.menu_name, self.admin_id, self.order_time, self.user_id)
+
+
+class OrderSchema(Schema):
+    """Defines a Order Schema"""
+    id = fields.Int(dump_only=True)
+    menu_id = fields.Int(required=True, validate=must_not_be_black)
+    day = fields.Date(dump_only=True)
+
+
+order_schema = MenuSchema()
