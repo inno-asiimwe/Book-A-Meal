@@ -1,0 +1,28 @@
+orders route
+---
+tags:
+- Book-A-Meal API
+parameters:
+- name: body
+    in: body
+    required: true
+    schema:
+    type: object
+    required:
+        - "menu_id"
+    properties:
+        meal_id:
+        type: "string"
+        example: "1"
+- name: Authorization
+    in: header
+    required: true
+    properties:
+    Authorization:
+        type: "string"
+
+responses:
+    200:
+        description: Successfully returned all the orders present.
+    400:
+        description: No orders present at the moment.
