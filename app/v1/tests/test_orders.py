@@ -1,20 +1,17 @@
 import unittest
-import os
 import json
-from app.v1.views.api import create_app, db
+from manage import start_app
+from app.v1.models.db_connect import db
+
+app = start_app()
 
 
 class OrderTestCase(unittest.TestCase):
     """This class represents the order test case"""
 
     def setUp(self):
-        self.app = create_app(config_name=os.getenv('APP_SETTINGS'))
-        self.client = self.app.test_client
-        self.order
-
-    def setUp(self):
         """Defines the test variables and initializes the app."""
-        self.app = create_app(config_name=os.getenv("APP_SETTINGS"))
+        self.app = app
         self.client = self.app.test_client
         self.meal = {"name": "Beef with Rice", "price": "4500"}
         self.menu = {"meal_id": 1}

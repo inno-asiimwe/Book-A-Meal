@@ -1,7 +1,9 @@
 import unittest
-import os
 import json
-from app.v1.views.api import create_app, db
+from manage import start_app
+from app.v1.models.db_connect import db
+
+app = start_app()
 
 
 class MealsTestCase(unittest.TestCase):
@@ -9,7 +11,7 @@ class MealsTestCase(unittest.TestCase):
 
     def setUp(self):
         """Defines the test variables and initializes the app."""
-        self.app = create_app(config_name=os.getenv('APP_SETTINGS'))
+        self.app = app
         self.client = self.app.test_client
         self.meal = {"name": "Beef with Rice", "price": "4500"}
         self.user_data = {
@@ -98,7 +100,7 @@ class MealsTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         results = self.client().get("/api/v1/meals",
                                     headers={"Authorization": result["access_token"]})
-        self.assertIn("chips", str(results.data))
+        self.assertIn("macroni", results.data)
 
     def test_meal_can_be_deleted(self):
         """Test API can delete an existing meal"""

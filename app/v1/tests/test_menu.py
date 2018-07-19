@@ -1,7 +1,9 @@
 import unittest
-import os
 import json
-from app.v1.views.api import create_app, db
+from manage import start_app
+from app.v1.models.db_connect import db
+
+app = start_app()
 
 
 class MenuTestCase(unittest.TestCase):
@@ -9,7 +11,7 @@ class MenuTestCase(unittest.TestCase):
 
     def setUp(self):
         """Defines the test variables and initializes the app."""
-        self.app = create_app(config_name=os.getenv('APP_SETTINGS'))
+        self.app = app
         self.client = self.app.test_client
         self.meal = {"name": "Beef with Rice", "price": "4500"}
         self.menu = {"meal_id": 1}
@@ -62,7 +64,7 @@ class MenuTestCase(unittest.TestCase):
                                      headers={"Authorization": result["access_token"]})
         print(response.data.decode())
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Beef with Rice" ,response.data)
+        self.assertIn(b"Beef with Rice",response.data)
 
     def tearDown(self):
         """teardown all initialized variables"""
