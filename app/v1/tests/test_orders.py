@@ -26,7 +26,6 @@ class OrderTestCase(unittest.TestCase):
         self.client().post("/auth/register", data=self.user_data)
         login_response = self.client().post("/auth/login", data=self.user_data)
         result = json.loads(login_response.data.decode())
-        self.assertTrue(result["access_token"])
         self.client().post(
             "/api/v1/meals",
             data=self.meal,
@@ -38,13 +37,30 @@ class OrderTestCase(unittest.TestCase):
             headers={
                 "Authorization": result["access_token"]})
         order_response = self.client().post(
-            "/api/"
+            "/api/v1/orders"
         )
-        pass
+        self.assertEqual(201, order_response.status_code)
+        
 
-    def test_remove_order(self):
-        """tests wether api can remove a specific order"""
-        pass
+    def test_make_orders(self):
+        """tests api ability to retrieve orders"""
+        self.client().post("/auth/register", data=self.user_data)
+        login_response = self.client().post("/auth/login", data=self.user_data)
+        result = json.loads(login_response.data.decode())
+        self.client().post(
+            "/api/v1/meals",
+            data=self.meal,
+            headers={
+                "Authorization": result["access_token"]})
+        response = self.client().post(
+            "/api/v1/menu",
+            data=self.menu,
+            headers={
+                "Authorization": result["access_token"]})
+        order_response = self.client().post(
+            "/api/v1/orders"
+        )
+        self.assertEqual(200, order_response.status_code)
 
     def tearDown(self):
         """teardown all initialized variables"""

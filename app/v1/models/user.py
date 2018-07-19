@@ -11,7 +11,7 @@ class User(db.Model):
     email = db.Column(db.String(145), nullable=False, unique=True)
     password = db.Column(db.String(150), nullable=False)
     admin = db.Column(db.Boolean, default=False)
-    orders = db.relationship('Order', backref='user')
+
 
     def __init__(self, email, password):
         """Initialize the user with an email and a password."""
@@ -86,4 +86,3 @@ class UserSchema(Schema):
 
 
 user_schema = UserSchema()
-users_schema = UserSchema(many=True)

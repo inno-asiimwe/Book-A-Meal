@@ -18,4 +18,7 @@ parameters:
         type: "string"
 responses:
     200:
-        description: The meal with the ID specified has been deleted
+        description: The meal with the ID specified has been deleted The meal specified is not present
+
+    400:
+        description: The meal specified is not present

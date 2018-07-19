@@ -8,11 +8,11 @@ from run_setup import app, app1
 
 from flasgger import Swagger
 
-swagger = Swagger(app)
+
 
 
 def start_app():
-
+    swagger = Swagger(app1)
     app1.register_blueprint(users)
     app1.register_blueprint(meals)
     app1.register_blueprint(menu)

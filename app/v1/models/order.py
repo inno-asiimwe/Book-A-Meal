@@ -1,44 +1,27 @@
 from datetime import datetime
 from flask import jsonify, make_response
 from app.v1.models.db_connect import db
+from marshmallow import Schema, fields, ValidationError
 
 
 class Order(db.Model):
     """Defines the 'Order' mapped to database table 'order'."""
     id = db.Column(db.Integer, primary_key=True)
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id'))
-    order_time = db.Column(db.DateTime, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    order_time = db.Column(db.DateTime, default=datetime.now())
 
-    def __init__(self, user_id, menu_id):
+    def __init__(self, menu_id):
         """Initialises the order tables"""
-        self.user_id = user_id
         self.menu_id = menu_id
 
-    # @staticmethod
-    # def setup_menu(id):
-    #     """Creates the menu"""
-    #     menu = Menu(meal_id=id)
-    #     menu.save()
-    #     return make_response(
-    #         {"MENU": {
-    #             'id': menu.id,
-    #             'name': menu.meal.name,
-    #             'price': menu.meal.price,
-    #             'day': datetime.utcnow()
-    #         }
-    #         }), 201
-
-    def setup_order(id):
+    def setup_order(self):
         """Creates the order"""
-        order = Order(order_id=id)
-        Order.save()
-        return make_response(
-            {"ORDER":{
-                "id": order.id,
-                "name":Order.menu_id
-            }}
+        db.session.add(self)
+        if self.save():
+            return make_response(
+                jsonify({'message':'ORDER CREATED'}), 201
         )
+        return make_response(jsonify(dict(message='ORDER NOT CREATED')), 200)
 
     def add_order(self):
         """Saves items to the order table"""
@@ -63,25 +46,42 @@ class Order(db.Model):
     @staticmethod
     def get_all_orders():
         """Retrieves all orders present"""
-        orders = []
-        raw_orders = Order.query.all()
-        for order in raw_orders:
-            orders.append(order.to_dictionary())
-        return orders
+        orders = Order.query.all()
+        results = []
+        if orders:
+            for order in orders:
+                obj = {
+                    "id": order.id,
+                    "order_time": order.order_time
+                }
+                results.append(obj)
+            response = jsonify(results)
+            response.status_code = 200
+            return response
+        else:
+            return make_response("No orders present", 400)
 
-    def to_dictionary(self):
-        """Return a dictionary representation of the order"""
-        return dict(
-            order_id=self.id,
-            user_id=self.user_id,
-            meal=self.menu.meal.name,
-            price=self.menu.meal.price,
-            order_time=self.order_time)
+    @staticmethod
+    def delete_order(id):
+        order = Order.query.filter_by(id=id).first()
+        if not order:
+            return make_response(
+                "The order specified is not present"), 400
+        Order.session.delete(order)
+        response = make_response(
+            "The order has been deleted", 200)
+        return response 
 
     def __repr__(self):
         """Returns a string representation of the order table"""
         return "Order(%d, %s, %s, %s, %s )" % (
             self.id, self.menu_name, self.admin_id, self.order_time, self.user_id)
+
+
+def must_not_be_black(data):
+    """Ensures data retrieved is not blank"""
+    if not data:
+        raise ValidationError("Data not provided")
 
 
 class OrderSchema(Schema):
@@ -91,4 +91,4 @@ class OrderSchema(Schema):
     day = fields.Date(dump_only=True)
 
 
-order_schema = MenuSchema()
+order_schema = OrderSchema()
