@@ -32,11 +32,6 @@ class Order(db.Model):
         db.session.add(self)
         return Order.save()
 
-    # def delete(self, x):
-    #     """Removes items from the order table"""
-    #     db.session.delete(x)
-    #     Order.save()
-
     @staticmethod
     def save():
         try:
