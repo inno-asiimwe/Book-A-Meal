@@ -46,7 +46,6 @@ class Menu(db.Model):
         menu = Menu(meal_id=id)
         menu.save()
         created_menu = Menu.query.filter_by(meal_id=id).first()
-        print(created_menu)
         if created_menu:
             return created_menu
         return False

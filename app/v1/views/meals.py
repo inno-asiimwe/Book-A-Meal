@@ -9,7 +9,7 @@ meals = Blueprint('meals', __name__, url_prefix='/api/v1')
 
 @meals.route("/meals")
 @swag_from('api_doc/get_meals.yml')
-# @login_required
+@login_required
 def account_get_meals():
     meals = Meal.get_meals()
     if meals:
@@ -19,7 +19,7 @@ def account_get_meals():
 
 @meals.route("/meals/<int:id>", methods=["GET"])
 @swag_from('api_doc/get_meal.yml')
-# @login_required
+@login_required
 def account_get_specific_meal(id):
     meal = Meal.get_meal(id)
     if meal:
@@ -28,7 +28,7 @@ def account_get_specific_meal(id):
 
 
 @meals.route("/meals", methods=["POST"])
-# @login_required
+@login_required
 @swag_from('api_doc/create_meal.yml')
 def account_create_meal():
     data = request.data
@@ -46,7 +46,7 @@ def account_create_meal():
 
 
 @meals.route("/meals/<int:id>", methods=["PUT"])
-# @login_required
+@login_required
 @swag_from('api_doc/update_meal.yml')
 def account_update_meal(id):
     name = request.data["name"]
@@ -59,7 +59,7 @@ def account_update_meal(id):
 
 
 @meals.route("/meals/<int:id>", methods=["DELETE"])
-# @login_required
+@login_required
 @swag_from('api_doc/delete_meal.yml')
 def account_delete_meal(id):
     meal = Meal.delete_meal(id)

@@ -69,7 +69,6 @@ class Meal(db.Model):
             meal.name = name
             meal.price = price
             meal.save()
-            # meal_schema.dump(meal)
             return meal_schema.dump(meal)
         return False
 
