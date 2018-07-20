@@ -58,7 +58,7 @@ def must_not_be_blank(data):
 class UserSchema(Schema):
     id = fields.Int(dump_only=True)
     email = fields.Email(required=True,
-                         validate=must_not_be_blank)
+                         validate=(validate.Length(min=8, max=100)))
     password = fields.Str(required=True, 
                           validate=(must_not_be_blank,
                                     validate.Length(min=8, max=100)))
