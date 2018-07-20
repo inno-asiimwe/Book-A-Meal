@@ -11,7 +11,7 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     """Configurations for Development."""
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost:5432/bookameal'
+    SQLALCHEMY_DATABASE_URI = 'postgres://wefdhppolazaqe:012cc1def2d004d3a8029b9ae1db84c8da225ed53a13b0b5ce41753aeb8e1b81@ec2-54-83-33-213.compute-1.amazonaws.com:5432/dfkcvogbaijjfu'
     DEBUG = True
 
 
