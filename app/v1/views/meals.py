@@ -1,4 +1,4 @@
-from flask import jsonify, request, Blueprint
+from flask import jsonify, make_response, request, Blueprint
 from flasgger import swag_from
 from app.v1.views.decorators import login_required
 from marshmallow import ValidationError
@@ -9,20 +9,26 @@ meals = Blueprint('meals', __name__, url_prefix='/api/v1')
 
 @meals.route("/meals")
 @swag_from('api_doc/get_meals.yml')
-@login_required
+# @login_required
 def account_get_meals():
-    return Meal.get_meals()
+    meals = Meal.get_meals()
+    if meals:
+        return jsonify({"Meals": meals}), 200
+    return "No meals present", 400
 
 
 @meals.route("/meals/<int:id>", methods=["GET"])
 @swag_from('api_doc/get_meal.yml')
-@login_required
+# @login_required
 def account_get_specific_meal(id):
-    return Meal.get_meal(id)
+    meal = Meal.get_meal(id)
+    if meal:
+        return jsonify({"Meal": meal}), 200
+    return make_response("That meal is not present", 400)
 
 
 @meals.route("/meals", methods=["POST"])
-@login_required
+# @login_required
 @swag_from('api_doc/create_meal.yml')
 def account_create_meal():
     data = request.data
@@ -32,20 +38,33 @@ def account_create_meal():
         return jsonify(e.messages)
 
     name, price = meal_data["name"], meal_data["price"]
-    return Meal.create_meal(name, price)
+    meal = Meal.create_meal(name, price)
+    if meal:
+        return jsonify(meal), 201
+    else:
+        return make_response("The meal already exists", 400)
 
 
 @meals.route("/meals/<int:id>", methods=["PUT"])
-@login_required
+# @login_required
 @swag_from('api_doc/update_meal.yml')
 def account_update_meal(id):
     name = request.data["name"]
     price = request.data["price"]
-    return Meal.update_meal(id, name, price)
+    meal = Meal.update_meal(id, name, price)
+    if meal:
+        return jsonify(meal), 200
+    else:
+        return jsonify({"message":"The meal specified is not present"}), 400
 
 
 @meals.route("/meals/<int:id>", methods=["DELETE"])
-@login_required
+# @login_required
 @swag_from('api_doc/delete_meal.yml')
 def account_delete_meal(id):
-    return Meal.delete_meal(id)
+    meal = Meal.delete_meal(id)
+    if not meal:
+        return "The meal specified is not present", 400
+    else:
+        return make_response(
+                 'The meal has been deleted', 200)

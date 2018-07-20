@@ -1,5 +1,4 @@
 from datetime import datetime
-from flask import jsonify, make_response
 from app.v1.models.db_connect import db
 from marshmallow import Schema, fields, ValidationError
 
@@ -29,8 +28,7 @@ class Menu(db.Model):
         """Retrieves all the menu items"""
         menus = Menu.query.all()
         if not menus:
-            return make_response("No menu present", 400)
-        
+            return False  
         results = []
         for menu in menus:
             obj = {
@@ -40,23 +38,18 @@ class Menu(db.Model):
                 'day': menu.day
             }
             results.append(obj)
-        response = jsonify(results)
-        response.status_code = 200
-        return response
+        return results
 
     @staticmethod
     def setup_menu(id):
         """Creates the menu"""
         menu = Menu(meal_id=id)
         menu.save()
-        return make_response(
-            {"MENU": {
-                'id': menu.id,
-                'name': menu.meal.name,
-                'price': menu.meal.price,
-                'day': datetime.utcnow()
-            }
-            }), 201
+        created_menu = Menu.query.filter_by(meal_id=id).first()
+        print(created_menu)
+        if created_menu:
+            return created_menu
+        return False
 
     def __repr__(self):
         """Returns a string representation of menu object"""
@@ -64,7 +57,7 @@ class Menu(db.Model):
             self.id, self.meal.name, self.meal.price, self.meal_id, self.day)
 
 
-def must_not_be_black(data):
+def must_not_be_blank(data):
     """Ensures data retrieved is not blank"""
     if not data:
         raise ValidationError("Data not provided")
@@ -73,7 +66,7 @@ def must_not_be_black(data):
 class MenuSchema(Schema):
     """Defines a Menu Schema"""
     id = fields.Int(dump_only=True)
-    meal_id = fields.Int(required=True, validate=must_not_be_black)
+    meal_id = fields.Int(required=True, validate=must_not_be_blank)
     day = fields.Date(dump_only=True)
 
 

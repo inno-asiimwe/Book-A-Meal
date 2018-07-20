@@ -18,10 +18,10 @@ class Order(db.Model):
         """Creates the order"""
         db.session.add(self)
         if self.save():
-            return make_response(
-                jsonify({'message':'ORDER CREATED'}), 201
-        )
-        return make_response(jsonify(dict(message='ORDER NOT CREATED')), 200)
+            return True
+        return False
+
+        
 
     def add_order(self):
         """Saves items to the order table"""
@@ -55,22 +55,16 @@ class Order(db.Model):
                     "order_time": order.order_time
                 }
                 results.append(obj)
-            response = jsonify(results)
-            response.status_code = 200
-            return response
-        else:
-            return make_response("No orders present", 400)
+            return results
+        return False
 
     @staticmethod
     def delete_order(id):
         order = Order.query.filter_by(id=id).first()
         if not order:
-            return make_response(
-                "The order specified is not present"), 400
+            return False
         Order.session.delete(order)
-        response = make_response(
-            "The order has been deleted", 200)
-        return response 
+        return True
 
     def __repr__(self):
         """Returns a string representation of the order table"""
@@ -78,7 +72,7 @@ class Order(db.Model):
             self.id, self.menu_name, self.admin_id, self.order_time, self.user_id)
 
 
-def must_not_be_black(data):
+def must_not_be_blank(data):
     """Ensures data retrieved is not blank"""
     if not data:
         raise ValidationError("Data not provided")
@@ -87,7 +81,7 @@ def must_not_be_black(data):
 class OrderSchema(Schema):
     """Defines a Order Schema"""
     id = fields.Int(dump_only=True)
-    menu_id = fields.Int(required=True, validate=must_not_be_black)
+    menu_id = fields.Int(required=True, validate=must_not_be_blank)
     day = fields.Date(dump_only=True)
 
 
