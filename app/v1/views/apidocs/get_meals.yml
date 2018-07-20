@@ -1,14 +1,14 @@
 Meals route
 ---
 tags:
-- Book-A-Meal API
+- Meals
 parameters:
 - name: Authorization
-    in: header
-    required: true
-    properties:
-    Authorization:
-        type: "string"
+  in: header
+  required: true
+  properties:
+  Authorization:
+    type: "string"
 responses:
     400:
         description: No meals present

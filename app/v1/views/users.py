@@ -9,7 +9,7 @@ users = Blueprint('users', __name__, url_prefix='/auth')
 
 
 @users.route("/register", methods=["POST"])
-@swag_from('api_doc/user_signup.yml')
+@swag_from('apidocs/user_signup.yml')
 def register_user():
     post_data = request.data
     try:
@@ -28,7 +28,7 @@ def register_user():
 
 
 @users.route("/login", methods=["POST"])
-@swag_from('api_doc/user_login.yml')
+@swag_from('apidocs/user_login.yml')
 def login_user():
     """Handle POST request for this view. Url --> /auth/login"""
     login_data = request.data

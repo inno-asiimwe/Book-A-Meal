@@ -1,17 +1,24 @@
 Orders route
 ---
 tags:
-- Book-A-Meal API
+- Orders
 parameters:
-- name: language
-    in: path
-    type: string
-    required: true
-    description: The language name
-- name: size
-    in: query
+- name: id
+  in: path
+  required: true
+  schema:
     type: integer
-    description: size of awesomeness
+    required:
+      - menu_id
+    properties:
+      meal_id:
+        type: integer
+- name: Authorization
+  in: header
+  required: true
+  properties:
+  Authorization:
+    type: "string"
 responses:
     200:
         description: The order has been deleted.

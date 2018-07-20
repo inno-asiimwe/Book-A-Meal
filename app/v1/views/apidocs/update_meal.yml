@@ -1,36 +1,35 @@
 Meals route
 ---
 tags:
-- Book-A-Meal API
+- Meals
 parameters:
 - name: body
-    in: body
-    required: true
-    schema:
+  in: body
+  required: true
+  schema:
     type: object
     required:
-        - "meal_name"
-        - "price"
+      - "name"
+      - "price"
     properties:
-        meal_name:
+      name:
         type: "string"
-        example: "Chicken na ketchup"
-        price:
-        type: "int"
-        example: "6000"
-- name: meal_id
-    in: path
-    required: true
-    properties:
-    meal_id:
-        type: "int"
-    default: 1
+        example: "Matooke and beans"
+      price:
+        type: "string"
+        example: "7000"
+- name: id
+  in: path
+  required: true
+  properties:
+  Authorization:
+    type: "string"
 - name: Authorization
-    in: header
-    required: true
-    properties:
-    Authorization:
-        type: "string"
+  in: header
+  required: true
+  properties:
+  Authorization:
+    type: "string"
 
 responses:
     404:

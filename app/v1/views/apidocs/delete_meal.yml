@@ -1,21 +1,24 @@
 Meals route
 ---
 tags:
-- Book-A-Meal API
+- Meals
 parameters:
-- name: meal_id
-    in: path
-    required: true
+- name: id
+  in: path
+  required: true
+  schema:
+    type: integer
+    required:
+      - meal_id
     properties:
-    meal_id:
-        type: "int"
-    default: 1
+      meal_id:
+        type: integer
 - name: Authorization
-    in: header
-    required: true
-    properties:
-    Authorization:
-        type: "string"
+  in: header
+  required: true
+  properties:
+  Authorization:
+    type: "string"
 responses:
     200:
         description: The meal with the ID specified has been deleted The meal specified is not present

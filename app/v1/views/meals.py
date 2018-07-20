@@ -8,7 +8,7 @@ meals = Blueprint('meals', __name__, url_prefix='/api/v1')
 
 
 @meals.route("/meals")
-@swag_from('api_doc/get_meals.yml')
+@swag_from('apidocs/get_meals.yml')
 @login_required
 def account_get_meals():
     meals = Meal.get_meals()
@@ -18,7 +18,7 @@ def account_get_meals():
 
 
 @meals.route("/meals/<int:id>", methods=["GET"])
-@swag_from('api_doc/get_meal.yml')
+@swag_from('apidocs/get_meal.yml')
 @login_required
 def account_get_specific_meal(id):
     meal = Meal.get_meal(id)
@@ -28,8 +28,8 @@ def account_get_specific_meal(id):
 
 
 @meals.route("/meals", methods=["POST"])
+@swag_from('apidocs/create_meal.yml')
 @login_required
-@swag_from('api_doc/create_meal.yml')
 def account_create_meal():
     data = request.data
     try:
@@ -46,8 +46,8 @@ def account_create_meal():
 
 
 @meals.route("/meals/<int:id>", methods=["PUT"])
+@swag_from('apidocs/update_meal.yml')
 @login_required
-@swag_from('api_doc/update_meal.yml')
 def account_update_meal(id):
     name = request.data["name"]
     price = request.data["price"]
@@ -59,8 +59,8 @@ def account_update_meal(id):
 
 
 @meals.route("/meals/<int:id>", methods=["DELETE"])
+@swag_from('apidocs/delete_meal.yml')
 @login_required
-@swag_from('api_doc/delete_meal.yml')
 def account_delete_meal(id):
     meal = Meal.delete_meal(id)
     if not meal:

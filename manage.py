@@ -12,11 +12,12 @@ from flasgger import Swagger
 
 
 def start_app():
-    swagger = Swagger(app1)
+    
     app1.register_blueprint(users)
     app1.register_blueprint(meals)
     app1.register_blueprint(menu)
     app1.register_blueprint(orders)
+    swagger = Swagger(app1)
     return app1
 
 

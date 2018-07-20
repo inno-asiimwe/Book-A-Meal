@@ -1,29 +1,29 @@
 Meals route
 ---
 tags:
-- Book-A-Meal API
+- Meals
 parameters:
 - name: body
-    in: body
-    required: true
-    schema:
+  in: body
+  required: true
+  schema:
     type: object
     required:
-        - "meal_name"
-        - "price"
+      - "name"
+      - "price"
     properties:
-        meal_name:
+      name:
         type: "string"
-        example: "Indian potatoes with Ughali"
-        price:
+        example: "Katogo"
+      price:
         type: "string"
-        example: "6000"
+        example: "3000"
 - name: Authorization
-    in: header
-    required: true
-    properties:
-    Authorization:
-        type: "string"
+  in: header
+  required: true
+  properties:
+  Authorization:
+    type: "string"
 
 responses:
     200:

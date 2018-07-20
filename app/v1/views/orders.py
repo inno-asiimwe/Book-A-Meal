@@ -9,7 +9,7 @@ orders = Blueprint('orders', __name__, url_prefix='/api/v1')
 
 
 @orders.route("/orders")
-@swag_from('api_doc/get_all_orders.yml')
+@swag_from('apidocs/get_all_orders.yml')
 @login_required
 def get_all_orders():
     orders = Order.get_all_orders()
@@ -19,7 +19,7 @@ def get_all_orders():
 
 
 @orders.route("/orders/<int:id>", methods=["DELETE"])
-@swag_from('api_doc/delete_order.yml')
+@swag_from('apidocs/delete_order.yml')
 @login_required
 def remove_order(id):
     if Order.delete_order(id):
@@ -28,7 +28,7 @@ def remove_order(id):
 
 
 @orders.route("/orders", methods=["POST"])
-@swag_from('api_doc/setup_order.yml')
+@swag_from('apidocs/setup_order.yml')
 @login_required
 def account_create_order():
     """Enables order setup"""

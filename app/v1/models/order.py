@@ -21,7 +21,10 @@ class Order(db.Model):
             return True
         return False
 
-        
+    def delete(self):
+        """Removes item from order table"""
+        db.session.delete(self)
+        db.session.commit()
 
     def add_order(self):
         """Saves items to the order table"""
@@ -29,10 +32,10 @@ class Order(db.Model):
         db.session.add(self)
         return Order.save()
 
-    def delete(self, x):
-        """Removes items from the order table"""
-        db.session.delete(x)
-        Order.save()
+    # def delete(self, x):
+    #     """Removes items from the order table"""
+    #     db.session.delete(x)
+    #     Order.save()
 
     @staticmethod
     def save():
@@ -63,7 +66,7 @@ class Order(db.Model):
         order = Order.query.filter_by(id=id).first()
         if not order:
             return False
-        Order.session.delete(order)
+        Order.delete(order)
         return True
 
     def __repr__(self):

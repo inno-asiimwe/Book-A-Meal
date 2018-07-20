@@ -1,25 +1,27 @@
 Menu route
 ---
 tags:
-- Book-A-Meal API
+- Menu
 parameters:
 - name: body
-    in: body
-    required: true
-    schema:
+  in: body
+  required: true
+  schema:
     type: object
     required:
-        - "meal_id"
+      - "name"
+      - "price"
     properties:
-        meal_id:
-        type: "string"
-        example: "1"
+      meal_id:
+        type: integer
+        example: 1      
+
 - name: Authorization
-    in: header
-    required: true
-    properties:
-    Authorization:
-        type: "string"
+  in: header
+  required: true
+  properties:
+  Authorization:
+  type: "string"
 
 responses:
     201:

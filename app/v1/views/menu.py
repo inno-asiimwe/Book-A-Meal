@@ -10,7 +10,7 @@ menu = Blueprint('menu', __name__, url_prefix='/api/v1')
 
 
 @menu.route("/menu")
-@swag_from('api_doc/get_menu.yml')
+@swag_from('apidocs/get_menu.yml')
 @login_required
 def get_menu():
     """Get menu available"""
@@ -21,7 +21,7 @@ def get_menu():
 
 
 @menu.route("/menu", methods=["POST"])
-@swag_from('api_doc/setup_menu.yml')
+@swag_from('apidocs/setup_menu.yml')
 @login_required
 def setup_menu():
     """Enables menu setup"""
